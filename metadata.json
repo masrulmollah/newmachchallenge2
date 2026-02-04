@@ -1,0 +1,7 @@
+{
+  "name": "Math Whiz Challenge",
+  "description": "An interactive math learning app for kids featuring random addition, subtraction, multiplication, division, and logic puzzles with voice-enabled answers and live tutoring.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
