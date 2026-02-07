@@ -1,12 +1,11 @@
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { generateQuestion } from './services/mathLogic';
-import { VoiceAssistant } from './services/voiceService';
+import { generateQuestion } from './mathLogic';
+import { VoiceAssistant } from './voiceService';
 import { Question, QuestionType, InteractionMode, GameState, HighScore } from './types';
 
 const STORAGE_KEY = 'math_whiz_high_scores';
 
-// Initial dummy scores to make the board look full and exciting
 const DEFAULT_SCORES: HighScore[] = [
   { name: 'Math Master', score: 100 },
   { name: 'Number Ninja', score: 50 },
@@ -30,7 +29,6 @@ const App: React.FC = () => {
   const [transcribedText, setTranscribedText] = useState('');
   const voiceAssistantRef = useRef<VoiceAssistant | null>(null);
 
-  // Load High Scores from Local Storage
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
@@ -67,7 +65,6 @@ const App: React.FC = () => {
         newScores.push({ name: currentName, score: currentScore });
       }
 
-      // Sort and slice to top 3
       const top3 = newScores
         .sort((a, b) => b.score - a.score)
         .slice(0, 3);
@@ -139,7 +136,6 @@ const App: React.FC = () => {
 
   const { currentQuestion, score, feedback, highScores, username } = gameState;
 
-  // Hall of Fame Component (Shared between mobile and desktop layout)
   const HallOfFame = ({ vertical = true }: { vertical?: boolean }) => (
     <div className={`backdrop-blur-xl bg-white/40 p-5 rounded-[2.5rem] border border-white/40 shadow-2xl ${vertical ? 'w-full' : 'flex items-center space-x-3 overflow-x-auto no-scrollbar'}`}>
       <h2 className={`font-fredoka text-indigo-800 tracking-wider uppercase text-center mb-3 ${vertical ? 'text-xl' : 'text-xs shrink-0 mr-2'}`}>
@@ -169,8 +165,6 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen w-full relative overflow-hidden flex flex-col items-center justify-center p-4">
-      
-      {/* Background Images */}
       <div className="fixed inset-0 z-0 flex w-full h-full">
         <div className="relative flex-1 h-full overflow-hidden">
           <img src="input_file_1.png" className="absolute inset-0 w-full h-full object-cover opacity-60 scale-105" alt="Background 1" />
@@ -183,7 +177,6 @@ const App: React.FC = () => {
         <div className="absolute inset-0 bg-white/10 backdrop-blur-[2px]"></div>
       </div>
 
-      {/* Start Screen */}
       {!isStarted && (
         <div className="relative z-40 w-full max-w-4xl flex flex-col md:flex-row gap-8 items-center justify-center animate-fade-in px-4">
           <div className="w-full max-w-md backdrop-blur-2xl bg-white/80 p-8 md:p-12 rounded-[3.5rem] shadow-2xl border border-white/40 text-center order-2 md:order-1">
@@ -207,7 +200,6 @@ const App: React.FC = () => {
         </div>
       )}
 
-      {/* Game Content */}
       {isStarted && (
         <>
           <header className="fixed top-0 left-0 right-0 z-30 p-4 md:p-6 backdrop-blur-md bg-white/30 border-b border-white/20">
@@ -224,7 +216,6 @@ const App: React.FC = () => {
                 </button>
               </div>
 
-              {/* Responsive Hall of Fame Ticker for Mobile/Small tablets */}
               <div className="w-full md:hidden">
                 <HallOfFame vertical={false} />
               </div>
@@ -238,7 +229,6 @@ const App: React.FC = () => {
             </div>
           </header>
 
-          {/* Hall of Fame Side Panel (Visible on Desktop/Large screens) */}
           <div className="fixed left-8 top-1/2 -translate-y-1/2 z-30 hidden lg:block w-72">
             <HallOfFame vertical={true} />
           </div>
